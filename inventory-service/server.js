@@ -14,4 +14,4 @@ app.post("/inventory", (req, res) => {
   res.send("This is inventory service");
 });
 
-app.listen(3001);
+app.listen(3002);

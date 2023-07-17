@@ -16,6 +16,6 @@ app.post("/billing", (req, res) => {
   res.send(req.body)
 });
 
-app.listen(3008, () => {
-  console.log(`Billing service is running on port 3008`);
+app.listen(3006, () => {
+  console.log(`Billing service is running on port 3006`);
 });

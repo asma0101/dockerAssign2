@@ -14,7 +14,7 @@ app.get("/", (req, res) => {
 app.post("/shipping", async (req, res) => {
   try {
     // Send the req.body object to billing-service
-    await axios.post('http://localhost:3008/billing', req.body);
+    await axios.post('http://localhost:3006/billing', req.body);
     res.sendStatus(200);
   } catch (error) {
     console.error(error);
@@ -22,6 +22,6 @@ app.post("/shipping", async (req, res) => {
   }
 });
 
-app.listen(3002, () => {
+app.listen(3008, () => {
   console.log(`Shipping service is running on port 3002`);
 });

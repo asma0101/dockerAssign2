@@ -4,19 +4,19 @@ services:
     build:
       context: ./inventory-service
     ports:
-      - '3006:3001'
+      - '3001:3002'
   shipping-service:
     build:
       context: ./shipping-service
     ports:
-      - '3007:3002'
+      - '3007:3008'
   users-service:
     build:
       context: ./users-service
     ports:
-      - '3009:3003'
+      - '3009:3000'
   billing-service:
     build:
       context: ./billing-service
     ports:
-      - '3005:3008'
+      - '3005:3006'

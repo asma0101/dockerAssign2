@@ -14,4 +14,4 @@ app.post("/users", (req, res) => {
   res.send("This is users service");
 });
 
-app.listen(3003);
+app.listen(3000);
