@@ -1,0 +1,22 @@
+version: '3'
+services:
+  inventory-service:
+    build:
+      context: ./inventory-service
+    ports:
+      - '3006:3001'
+  shipping-service:
+    build:
+      context: ./shipping-service
+    ports:
+      - '3007:3002'
+  users-service:
+    build:
+      context: ./users-service
+    ports:
+      - '3009:3003'
+  billing-service:
+    build:
+      context: ./billing-service
+    ports:
+      - '3005:3008'
