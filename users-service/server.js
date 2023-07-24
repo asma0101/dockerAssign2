@@ -1,5 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
+const { MY_CONSTANTS } = require("../lib/constants");
+const { sendMsg } = require("../lib/rmq");
 
 const app = express();
 
@@ -11,6 +13,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/users", (req, res) => {
+  sendMsg(MY_CONSTANTS.DATA_SERVICE_QUEUE, req.body);
   res.send("This is users service");
 });
 

@@ -20,3 +20,8 @@ services:
       context: ./billing-service
     ports:
       - '3005:3006'
+  data-service:
+    build:
+      context: ./data-service
+    ports:
+      - '5005:5005'
