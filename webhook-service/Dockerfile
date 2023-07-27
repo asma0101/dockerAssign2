@@ -2,10 +2,13 @@ FROM node:14
 
 WORKDIR /app
 
-COPY package.json .
+COPY ./webhook-service/package*.json ./
 RUN npm install
 
-COPY . .
+COPY ./webhook-service .
+
+COPY ./lib /app/lib
+RUN cd /app/lib && npm install
 
 EXPOSE 5008
 

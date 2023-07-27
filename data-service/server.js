@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
-const { MY_CONSTANTS } = require("../lib/constants");
+const { MY_CONSTANTS } = require("./lib/constants");
+
 const amqp = require('amqplib');
 
 const app = express();
@@ -8,26 +9,32 @@ const app = express();
 app.use(morgan("combined"));
 app.use(express.json());
 
+
 async function main() {
   try {
-    const connection = await amqp.connect('amqp://localhost');
+    const connection = await amqp.connect(MY_CONSTANTS.CONNECTION_STRING);
     const channel = await connection.createChannel();
 
-    await channel.assertQueue(MY_CONSTANTS.DATA_SERVICE_QUEUE);
-
-    channel.consume(MY_CONSTANTS.DATA_SERVICE_QUEUE, (message) => {
-      if (message !== null) {
-        console.log('Received message:', message.content.toString());
-        channel.assertQueue(MY_CONSTANTS.WEB_HOOK_QUEUE);
-        channel.sendToQueue(MY_CONSTANTS.WEB_HOOK_QUEUE, message.content);
-        channel.ack(message);
-      }
-    });
+    await consumeMessage(channel, MY_CONSTANTS.USER_SERVICE_QUEUE);
+    await consumeMessage(channel, MY_CONSTANTS.SHIPPING_SERVICE_QUEUE);
+    await consumeMessage(channel, MY_CONSTANTS.BILLING_SERVICE_QUEUE);
 
     console.log('Data service is waiting for messages...');
   } catch (error) {
     console.error('Error:', error.message);
   }
 }
+
+async function consumeMessage(channel, queueName) {
+  await channel.assertQueue(queueName);
+  channel.consume(queueName, (message) => {
+    if (message !== null) {
+        console.log(`Message received from queue ${queueName}`, message.content.toString());
+        channel.assertQueue(MY_CONSTANTS.WEB_HOOK_QUEUE);
+        channel.sendToQueue(MY_CONSTANTS.WEB_HOOK_QUEUE, message.content);
+        channel.ack(message);
+      }
+  })
+}
 main();
-app.listen(5005);
+app.listen(5009);

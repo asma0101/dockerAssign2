@@ -1,7 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
-const { MY_CONSTANTS } = require("../lib/constants");
-const { sendMsg } = require("../lib/rmq");
+const { MY_CONSTANTS } = require("./lib/constants");
+const { sendMsg } = require("./lib/rmq");
 
 const app = express();
 
@@ -13,8 +13,10 @@ app.get("/", (req, res) => {
 });
 
 app.post("/users", (req, res) => {
-  sendMsg(MY_CONSTANTS.DATA_SERVICE_QUEUE, req.body);
+  sendMsg(MY_CONSTANTS.USER_SERVICE_QUEUE, req.body);
   res.send("This is users service");
 });
 
-app.listen(3000);
+app.listen(3000, () => {
+  console.log(`Shipping service is running on port 3008`);
+});

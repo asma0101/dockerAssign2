@@ -2,11 +2,14 @@ FROM node:14
 
 WORKDIR /app
 
-COPY package.json .
+COPY ./data-service/package*.json ./
 RUN npm install
 
-COPY . .
+COPY ./data-service .
 
-EXPOSE 5005
+COPY ./lib /app/lib
+RUN cd /app/lib && npm install
+
+EXPOSE 5009
 
 CMD ["node", "server.js"]

@@ -4,8 +4,8 @@ const morgan = require("morgan");
 const amqp = require('amqplib');
 
 
-const { receiveMsg } = require("../lib/rmq");
-const { MY_CONSTANTS } = require("../lib/constants");
+const { receiveMsg } = require("./lib/rmq");
+const { MY_CONSTANTS } = require("./lib/constants");
 
 
 // init express app

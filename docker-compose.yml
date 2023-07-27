@@ -1,27 +1,56 @@
 version: '3'
 services:
-  inventory-service:
-    build:
-      context: ./inventory-service
+  rabbitmq:
+    restart: always
+    image: rabbitmq
     ports:
-      - '3001:3002'
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+  webhook-service:
+    build:
+      context: .
+      dockerfile: ./webhook-service/Dockerfile
+    ports:
+      - '5008:5008'
+    depends_on:
+      - rabbitmq
   shipping-service:
     build:
-      context: ./shipping-service
+      context: .
+      dockerfile: ./shipping-service/Dockerfile
     ports:
       - '3007:3008'
+    depends_on:
+      - data-service
   users-service:
     build:
-      context: ./users-service
+      context: .
+      dockerfile: ./users-service/Dockerfile
     ports:
       - '3009:3000'
+    depends_on:
+      - data-service
   billing-service:
     build:
-      context: ./billing-service
+      context: .
+      dockerfile: ./billing-service/Dockerfile
     ports:
       - '3005:3006'
+    depends_on:
+      - data-service
   data-service:
     build:
-      context: ./data-service
+      context: .
+      dockerfile: ./data-service/Dockerfile
     ports:
-      - '5005:5005'
+      - '5009:5009'
+    depends_on:
+      - rabbitmq

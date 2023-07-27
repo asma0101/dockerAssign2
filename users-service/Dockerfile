@@ -2,10 +2,13 @@ FROM node:14
 
 WORKDIR /app
 
-COPY package.json .
+COPY ./users-service/package*.json ./
 RUN npm install
 
-COPY . .
+COPY ./users-service .
+
+COPY ./lib /app/lib
+RUN cd /app/lib && npm install
 
 EXPOSE 3009
 

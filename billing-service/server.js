@@ -1,8 +1,8 @@
 const express = require("express");
 const morgan = require("morgan");
 const axios = require('axios');
-const { sendMsg } = require("../lib/rmq");
-const { MY_CONSTANTS } = require("../lib/constants");
+const { sendMsg } = require("./lib/rmq");
+const { MY_CONSTANTS } = require("./lib/constants");
 const app = express();
 
 app.use(morgan("combined"));
@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
 app.post("/billing", (req, res) => {
   // Log the object received from the shipping-service
   console.log(req.body);
-  sendMsg(MY_CONSTANTS.DATA_SERVICE_QUEUE, req.body);
+  sendMsg(MY_CONSTANTS.BILLING_SERVICE_QUEUE, req.body);
   res.send(req.body)
 });
 

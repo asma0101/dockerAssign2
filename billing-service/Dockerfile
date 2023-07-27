@@ -2,10 +2,13 @@ FROM node:14
 
 WORKDIR /app
 
-COPY package.json .
+COPY ./billing-service/package*.json ./
 RUN npm install
 
-COPY . .
+COPY ./billing-service .
+
+COPY ./lib /app/lib
+RUN cd /app/lib && npm install
 
 EXPOSE 3005
 

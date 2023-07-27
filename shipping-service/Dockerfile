@@ -2,11 +2,14 @@ FROM node:14
 
 WORKDIR /app
 
-COPY package.json .
+COPY ./shipping-service/package*.json ./
 RUN npm install
 
-COPY . .
+COPY ./shipping-service .
 
-EXPOSE 3007
+COPY ./lib /app/lib
+RUN cd /app/lib && npm install
 
 CMD ["node", "server.js"]
+
+EXPOSE 3008
